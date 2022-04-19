@@ -1,0 +1,20 @@
+<ul class="list-group">
+  <li *ngFor="let transaction of cat_transactions "
+    class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+    <div class="d-flex align-items-center">
+      <button class="btn btn-icon-only btn-rounded mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"
+        [ngClass]="{'btn-outline-danger': transaction.type === 'Outcome', 'btn-outline-success': transaction.type==='Income'}"><i
+        class="fas fa-arrow-down" [ngClass]="{'fa fa-arrow-down': transaction.type === 'Outcome', ' fas fa-arrow-up': transaction.type==='Income'}"></i></button>
+      <div class="d-flex flex-column">
+        <h6 class="mb-1 text-dark text-sm">{{transaction.name}}</h6>
+        <span class="text-xs">{{transaction.date}} | {{transaction.category_name}}</span>
+      </div>
+    </div>
+    <div class="d-flex align-items-center text-gradient text-sm font-weight-bold"
+      [ngClass]="{'text-danger': transaction.type === 'Outcome', 'text-success': transaction.type==='Income'}">
+      <span *ngIf="transaction.type=='Income'">+</span><span *ngIf="transaction.type=='Outcome'">-</span>
+      {{transaction.value}} KM
+    </div>
+  </li>
+
+</ul>

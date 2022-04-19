@@ -1,0 +1,130 @@
+<div class="flex-row mt-4 d-flex justify-content-center">
+  <div class="col-md-11 mt-4 ml-5">
+    <div class="card h-100 mb-4">
+      <div class="card-header pb-0 px-3">
+        <div class="row">
+          <div class="col-md-8">
+            <h6 class="mb-0">Your Transaction's</h6>
+          </div>
+          <div class="col-md-2">
+            <button data-bs-toggle="modal" data-bs-target="#newIncome" class="btn btn-success btn-sm ms-auto">Add
+              Income</button>
+            <button data-bs-toggle="modal" data-bs-target="#newOutcome" class="btn btn-danger ml-4 ms-2 btn-sm ">Add
+              Outcome</button>
+          </div>
+          <div class="col-md-2 d-flex justify-content-end align-items-center">
+            <i class="far fa-calendar-alt me-2"></i>
+            <small>{{this.min_date}} - {{this.max_date}}</small>
+          </div>
+        </div>
+      </div>
+      <div class="card-body pt-4 p-3">
+
+
+        <h6 class="text-uppercase text-body text-xs font-weight-bolder mb-3">Newest</h6>
+        <ul class="list-group">
+          <li *ngFor="let transaction of transactions "
+            class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+            <div class="d-flex align-items-center">
+              <button
+                class="btn btn-icon-only btn-rounded mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"
+                [ngClass]="{'btn-outline-danger': transaction.type === 'Outcome', 'btn-outline-success': transaction.type==='Income'}"><i
+                  class="fa fa-arrow-down"
+                  [ngClass]="{'fas fa-arrow-down': transaction.type === 'Outcome', ' fas fa-arrow-up': transaction.type==='Income'}"></i></button>
+              <div class="d-flex flex-column">
+                <h6 class="mb-1 text-dark text-sm">{{transaction.name}}</h6>
+                <span class="text-xs">{{transaction.date}} | {{transaction.category_name}}</span>
+              </div>
+            </div>
+            <div class="d-flex align-items-center text-gradient text-sm font-weight-bold"
+              [ngClass]="{'text-danger': transaction.type === 'Outcome', 'text-success': transaction.type==='Income'}">
+              <span *ngIf="transaction.type=='Income'">+</span><span *ngIf="transaction.type=='Outcome'">-</span>
+              {{transaction.value}} KM
+            </div>
+          </li>
+
+        </ul>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="newIncome" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Add New Income</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form [formGroup]="incomeForm" (ngSubmit)="incomeSubmit()">
+        <div class="modal-body">
+          <select class="form-control " formControlName="category_id">
+            <option>Select Category</option>
+            <option value="{{category.id}}" *ngFor="let category of categories">{{category.name}}</option>
+          </select>
+          <div *ngIf="incomeForm.controls['category_id'].hasError('required')">
+            Category is required
+          </div>
+          <label for="text">Transaction Name</label>
+          <input type="text" formControlName="name" class="form-control" id="name" placeholder="Income Name" />
+          <div *ngIf="incomeForm.controls['name'].hasError('required')">
+            Transaction Name is required
+          </div>
+          <label for="text">Amount</label>
+          <input type="text" name="value" class="form-control mb-3" formControlName="value" id="value"
+            placeholder="Amount" />
+          <div *ngIf="incomeForm.controls['value'].hasError('required')">
+            Amount is required
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!incomeForm.valid" data-bs-dismiss="modal">Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="newOutcome" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Add New Outcome</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form [formGroup]="outcomeForm" (ngSubmit)="outcomeSubmit()">
+        <div class="modal-body">
+          <select class="form-control " formControlName="category_id" placeholder="Select category">
+            <option value="0" selected>Select Category</option>
+            <option value="{{category.id}}" *ngFor="let category of categories">{{category.name}}</option>
+          </select>
+          <div *ngIf="outcomeForm.controls['category_id'].hasError('required')">
+            Category is required
+          </div>
+          <label for="text">Transaction Name</label>
+          <input type="text" class="form-control" formControlName="name" id="name" placeholder="Income Name" />
+          <div *ngIf="outcomeForm.controls['name'].hasError('required')">
+            Transaction name is required
+          </div>
+          <label for="text">Amount</label>
+          <input type="text" class="form-control mb-3" formControlName="value" id="value" placeholder="Amount" />
+          <div *ngIf="outcomeForm.controls['value'].hasError('required')">
+            Amount is required
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!outcomeForm.valid" data-bs-dismiss="modal">Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
